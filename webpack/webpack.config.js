@@ -10,7 +10,7 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       options: {
-        presets: ['es2015', 'stage-2']
+        "presets": ["@babel/preset-env"]
       }
     }]
   }
