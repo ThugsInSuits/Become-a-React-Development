@@ -63,10 +63,3 @@ Reflect.set(
   'Alexander Severus',
   newContext
 );
-
-console.log(person.name);为什么这行代码输出undefined
-
-console.log(person.first + " " + person.last);为什么还是打印原值，不应该是 'Alexander Severus'
-
-console.log(newContext.first + " " + newContext.last);
-console.log(newContext.name);为什么这两行的输出不一样，用中文回答
