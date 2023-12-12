@@ -1,47 +1,56 @@
 import React from 'react';
 
-const stories = [
-  {
-    title: 'React',
-    url: 'https://reactjs.org/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: 'Redux',
-    url: 'https://redux.js.org/',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-];
-
-class Developer{
-  constructor(firstName,secondName){
-    this.firstName = firstName;
-    this.secondName = secondName;
-  }
-
-  getName(){
-    return this.firstName + this.secondName;
-  }
-}
-
 function App() {
+  const stories = [
+    {
+      title: 'React',
+      url: 'https://reactjs.org/',
+      author: 'Jordan Walke',
+      num_comments: 3,
+      points: 4,
+      objectID: 0,
+    },
+    {
+      title: 'Redux',
+      url: 'https://redux.js.org/',
+      author: 'Dan Abramov, Andrew Clark',
+      num_comments: 2,
+      points: 5,
+      objectID: 1,
+    },
+  ];
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
+      <Search />
 
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      
       <hr />
       <List list={stories}/>
     </div>
   );
 }
+
+const Search = () => {
+  const [searchTerm,setSearchTerm] = React.useState('');
+
+  const handleChange = event => {
+    setSearchTerm(event.target.value);
+  }
+
+  return (
+    <div>
+      <label htmlFor='search'>Search:</label>
+      <input id='search' type='text' onChange={handleChange}>
+      </input>
+      <p>
+        searching for <strong>{searchTerm}</strong>.
+      </p>
+    </div>
+  );
+}
+
 
 const List = props => 
   props.list.map(item => (
