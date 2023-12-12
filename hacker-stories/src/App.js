@@ -1,6 +1,6 @@
 import React from 'react';
 
-const list = [
+const stories = [
   {
     title: 'React',
     url: 'https://reactjs.org/',
@@ -38,22 +38,22 @@ function App() {
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" />
       <hr />
-      <List />
-      <List />
+      <List list={stories}/>
     </div>
   );
 }
 
-function List() {
-  const robin = new Developer('Robin','Wierch');
-  const dennis = new Developer('Dennis','Wierch');
-
-  return (
-    <div>
-      {robin.getName()}
-      {dennis.getName()}
-    </div>
-  );
-}
+const List = props => 
+  props.list.map(item => (
+    <div key={item.objectID}>
+    <span>
+      <a href={item.url}>{item.title}</a>
+    </span>
+    <span>{item.author}</span>
+    <span>{item.num_comments}</span>
+    <span>{item.points}</span>
+  </div>
+  ));
+  
 
 export default App;
