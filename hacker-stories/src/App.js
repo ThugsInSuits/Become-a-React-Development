@@ -9,7 +9,7 @@ const useSemiPersistencState = (key, initaState) => {
   return [value,setValue];
 }
 
-function App() {
+const App = () => {
   const stories = [
     {
       title: 'React',
@@ -46,27 +46,34 @@ function App() {
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-
-
-
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <Search onSearch={handleSearch} search={searchTerm} />
-
-
+      <InputWithLabel id="search"  value={searchTerm} onInputChange={handleSearch} >
+        <strong>Search:</strong>
+      </InputWithLabel>
       <hr />
       <List list={searchStories} />
     </div>
   );
 }
 
-const Search = ({search,onSearch}) => (
+const InputWithLabel = ({id,
+  type='text',
+  value,
+  onInputChange,
+  children}) => (
   <>
-    <label htmlFor='search'>Search:</label>
-    <input id='search' type='text' value={search} onChange={onSearch} />
+    <lable htmlFor={id}>{children}</lable>
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      vlaue={value}
+      onchange={onInputChange}
+      />
   </>
-);
+)
 
 
 const List = ({ list }) => list.map(item => <Item key={item.objectID} item={item} />)
