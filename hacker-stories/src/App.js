@@ -53,6 +53,14 @@ const App = () => {
     'React'
   );
 
+  const [url, setUrl] = React.useState(
+    `${API_ENDPOINT}${searchTerm}`
+  );
+
+  const handleSearchSubmit = event => {
+    setUrl(`${API_ENDPOINT}${searchTerm}`)
+  }
+
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
     { data: [], isLoading: false, isError: false }
@@ -64,41 +72,22 @@ const App = () => {
     }
 
     dispatchStories({type:'STORIES_FETCH_INIT'});
-    fetch(`${API_ENDPOINT}${searchTerm}`)
+    fetch(url)
       .then(response => response.json)
       .then(result => {
         dispatchStories({
           type:'STORIES_FETCH_SUCCESS',
-          payload:'result.hits'
+          payload:result.hits
         });
       })
       .catch(()=>{
         dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
       })
-  },[searchTerm]);
+  },[url]);
   
   React.useEffect(()=>{
     handleFetchStories();
   },[handleFetchStories]);
-
-  // React.useEffect(() => {
-  //   if (!searchTerm) {
-  //     return;
-  //   }
-  //   dispatchStories({ type: 'STORIES_FETCH_INIT' });
-
-  //   fetch(`${API_ENDPOINT}${searchTerm}`)
-  //     .then(response => response.json())
-  //     .then(result => {
-  //       dispatchStories({
-  //         type: 'STORIES_FETCH_SUCCESS',
-  //         payload: result.hits,
-  //       });
-  //     })
-  //     .catch(() =>
-  //       dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-  //     );
-  // }, [searchTerm]);
 
   const handleRemoveStory = item => {
     dispatchStories({
@@ -110,10 +99,6 @@ const App = () => {
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
-
-  // const searchedStories = stories.data.filter(story =>
-  //   story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
 
   return (
     <div>
@@ -127,7 +112,7 @@ const App = () => {
       >
         <strong>Search:</strong>
       </InputWithLabel>
-
+      <button type='button' disabled={!searchTerm} onClick={handleSearchSubmit}>Submit</button>
       <hr />
 
       {stories.isError && <p>Something went wrong ...</p>}
