@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { sortBy } from 'lodash'
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -191,15 +192,59 @@ const InputWithLabel = ({
   );
 };
 
-const List = React.memo(({ list, onRemoveItem }) =>
-  list.map(item => (
-    <Item
-      key={item.objectID}
-      item={item}
-      onRemoveItem={onRemoveItem}
-    />
-  ))
-);
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, 'title'),
+  AUTHOR: list => sortBy(list, 'author'),
+  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
+  POINTS: list => sortBy(list, 'points').reverse(),
+}
+
+const List = ({ list, onRemoveItem }) => {
+  const [sort, setSort] = React.useState('NONE');
+  const handleSort = sortKey => {
+    setSort(sortKey);
+  }
+  const sortFunction = SORTS[sort];
+  const sortedList = sortFunction(list);
+
+  return (
+    <div>
+      <div>
+        <span>
+          <button type='button' onClick={()=>handleSort('TITLE')}>
+            Title
+          </button>
+        </span>
+        <span>
+          <button type='button' onClick={()=>handleSort('AUTHOR')}>
+            Author
+          </button>
+        </span>
+        <span>
+          <button type='button' onClick={()=>handleSort('COMMENTS')}>
+            Comments
+          </button>
+        </span>
+        <span>
+          <button type='button' onClick={()=>handleSort('POINTS')}>
+            Points
+          </button>
+        </span>
+        <span>
+            Actions
+        </span>
+        </div>
+        {sortedList.map(item => (
+          <Item 
+            key={item.objectID}
+            item={item}
+            onRemoveItem={onRemoveItem}
+          />
+        ))}
+    </div>
+  );
+}
 
 const Item = ({ item, onRemoveItem }) => (
   <div>
